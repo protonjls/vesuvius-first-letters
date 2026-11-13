@@ -1,0 +1,1 @@
+{"shape": [4668, 8864], "valid_px": 31538823, "ink_frac": 0.0204914431968498, "blank_frac": 0.6371823070252178, "ignore_frac": 0.34232624977793247, "ink_thr": 0.6, "blank_thr": 0.3, "min_area": 30, "ring": 3, "map_a": "$WORK/maps/w062_v3.tif", "map_b": "$WORK/maps/w062_rect.tif", "exclude": []}

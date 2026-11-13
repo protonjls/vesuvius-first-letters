@@ -1,0 +1,6 @@
+gpu-node
+GPU 0: NVIDIA H100 80GB HBM3 (UUID: -)
+  MIG 2g.20gb     Device  0: (UUID: -)
+CKPT $MODELS/reader-v3/reader-v3.pth TAG v3 OFFS -3 -2 -1 0 1 2 3 SURF w058 w060 343
+vol $DATA/w058/layers -> $WORK/vol/w058.zarr shape (24, 4512, 8184) flip True
+vol $DATA/w060/layers -> $WORK/vol/w060.zarr shape (24, 4536, 8488) flip True

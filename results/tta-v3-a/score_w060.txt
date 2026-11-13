@@ -1,0 +1,10 @@
+o-1                                      AUC 0.774  AP 0.625  FPR@R50 0.116  n 807676  pos 0.260
+o-2                                      AUC 0.756  AP 0.592  FPR@R50 0.135  n 807676  pos 0.260
+o-3                                      AUC 0.741  AP 0.560  FPR@R50 0.151  n 807676  pos 0.260
+o0                                       AUC 0.785  AP 0.647  FPR@R50 0.101  n 807676  pos 0.260
+o1                                       AUC 0.780  AP 0.649  FPR@R50 0.100  n 807676  pos 0.260
+o2                                       AUC 0.786  AP 0.654  FPR@R50 0.100  n 807676  pos 0.260
+o3                                       AUC 0.797  AP 0.666  FPR@R50 0.093  n 807676  pos 0.260
+mirror                                   AUC 0.793  AP 0.645  FPR@R50 0.107  n 807676  pos 0.260
+dmean1                                   AUC 0.783  AP 0.645  FPR@R50 0.104  n 807676  pos 0.260
+dmean2                                   AUC 0.781  AP 0.644  FPR@R50 0.106  n 807676  pos 0.260

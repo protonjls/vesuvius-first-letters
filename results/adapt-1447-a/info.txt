@@ -1,0 +1,21 @@
+gpu-node
+GPU 0: NVIDIA H100 80GB HBM3 (UUID: -)
+  MIG 2g.20gb     Device  0: (UUID: -)
+RUN adapt-1447-a LR 0.001 ITERS 2000 BATCH 4 SAVE 500
+vol $DATA/w058/layers -> $WORK/data/volumes/w058.zarr shape (24, 4512, 8184) flip True
+vol $DATA/w060/layers -> $WORK/data/volumes/w060.zarr shape (24, 4536, 8488) flip True
+vol $DATA/w062/layers -> $WORK/data/volumes/w062.zarr shape (24, 4668, 8864) flip True
+labels w062: Z 24 HxW (4668, 8864) ink 0.0156 sup 0.5013
+noop train rc=0 99 s
+NOOP max|diff| 0  frac>1 0.000000  (uint8 maps)
+train rc=0 598 s
+total 1082532
+drwxr-xr-x  4 user user      4096 Nov 13 13:39 .
+drwxr-x--- 12 user user      4096 Nov 13 13:30 ..
+-rw-r--r--  1 user user 276627959 Nov 13 13:33 ckpt_000500.pth
+-rw-r--r--  1 user user 276627959 Nov 13 13:35 ckpt_001000.pth
+-rw-r--r--  1 user user 276627959 Nov 13 13:37 ckpt_001500.pth
+-rw-r--r--  1 user user 276627959 Nov 13 13:39 ckpt_002000.pth
+-rw-r--r--  1 user user   1967228 Nov 13 13:31 flat_ink_patches_dm-labeled_pf-labeled-default-v6-po-0.25-mlc-0.0-pfs-_ps-17x384x384_labels-auto.json
+drwxr-xr-x  2 user user      4096 Nov 13 13:30 train_previews
+drwxr-xr-x  2 user user      4096 Nov 13 13:30 val_previews

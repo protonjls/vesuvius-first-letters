@@ -1,0 +1,13 @@
+# PHerc1447 w058, reverse depth order, pixel AUC/AP vs refined human labels inside the certainty mask (stride 2)
+# maps: <ink-sdk output>/1447w058/<profile>/probability_reverse.npy (ink-sdk 2df3ab50); reader-v2 resized from its 9.6 um grid
+v3                             AUC 0.849 AP 0.718
+rect                           AUC 0.857 AP 0.743
+v8                             AUC 0.862 AP 0.696
+v2                             AUC 0.837 AP 0.708
+dn                             AUC 0.819 AP 0.673
+v3*v8 product                  AUC 0.880 AP 0.760
+rect*v8 product                AUC 0.884 AP 0.768
+z(v3+v8)                       AUC 0.878 AP 0.758
+z(v3+rect)                     AUC 0.860 AP 0.743
+z(v3+rect+v8)                  AUC 0.882 AP 0.768
+z(all5)                        AUC 0.876 AP 0.762

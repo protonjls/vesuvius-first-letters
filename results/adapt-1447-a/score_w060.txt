@@ -1,0 +1,8 @@
+v3                                       AUC 0.785  AP 0.647  FPR@R50 0.101  n 807676  pos 0.260
+rect                                     AUC 0.792  AP 0.645  FPR@R50 0.101  n 807676  pos 0.260
+v3xrect                                  AUC 0.797  AP 0.658  FPR@R50 0.092  n 807676  pos 0.260
+ft000500                                 AUC 0.746  AP 0.591  FPR@R50 0.115  n 807676  pos 0.260
+ft001000                                 AUC 0.722  AP 0.591  FPR@R50 0.223  n 807676  pos 0.260
+ft001500                                 AUC 0.759  AP 0.624  FPR@R50 0.100  n 807676  pos 0.260
+ft002000                                 AUC 0.764  AP 0.623  FPR@R50 0.098  n 807676  pos 0.260
+final                                    AUC 0.764  AP 0.623  FPR@R50 0.098  n 807676  pos 0.260

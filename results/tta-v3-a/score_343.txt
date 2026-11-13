@@ -1,0 +1,10 @@
+o-1                                      auc 0.755  letter_z mean +1.26 median +1.39  hit 0.89
+o-2                                      auc 0.755  letter_z mean +1.26 median +1.32  hit 0.89
+o-3                                      auc 0.756  letter_z mean +1.27 median +1.30  hit 0.94
+o0                                       auc 0.756  letter_z mean +1.26 median +1.32  hit 0.89
+o1                                       auc 0.755  letter_z mean +1.25 median +1.25  hit 0.89
+o2                                       auc 0.754  letter_z mean +1.23 median +1.21  hit 0.83
+o3                                       auc 0.750  letter_z mean +1.20 median +1.14  hit 0.83
+mirror                                   auc 0.765  letter_z mean +1.28 median +1.35  hit 0.89
+dmean1                                   auc 0.756  letter_z mean +1.26 median +1.35  hit 0.89
+dmean2                                   auc 0.758  letter_z mean +1.27 median +1.33  hit 0.89

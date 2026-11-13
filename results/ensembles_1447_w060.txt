@@ -1,0 +1,21 @@
+# PHerc1447 w060, reverse order, pixel AUC/AP vs refined labels inside mask, stride 2; eval/ens_auc.py; maps from ink-sdk 2df3ab50 (reader-v3, rectina-m4, v8in, v2, dnative profiles)
+v3                             AUC 0.774 AP 0.625
+rect                           AUC 0.782 AP 0.628
+v8                             AUC 0.810 AP 0.680
+v2                             AUC 0.759 AP 0.591
+dn                             AUC 0.712 AP 0.510
+v3*rect product                AUC 0.786 AP 0.638
+v3*v8 product                  AUC 0.826 AP 0.692
+v3*v2 product                  AUC 0.776 AP 0.621
+v3*dn product                  AUC 0.766 AP 0.601
+rect*v8 product                AUC 0.829 AP 0.696
+rect*v2 product                AUC 0.785 AP 0.631
+rect*dn product                AUC 0.772 AP 0.611
+v8*v2 product                  AUC 0.819 AP 0.682
+v8*dn product                  AUC 0.805 AP 0.668
+v2*dn product                  AUC 0.753 AP 0.578
+z(v3+v8)                       AUC 0.826 AP 0.694
+z(v3+rect)                     AUC 0.787 AP 0.639
+z(v3+rect+v8)                  AUC 0.829 AP 0.689
+z(v3+rect+v8+v2+dn)            AUC 0.810 AP 0.660
+n 807676 pos 0.260

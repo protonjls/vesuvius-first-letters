@@ -1,0 +1,11 @@
+# Pseudo-label quality on PHerc1447 w058/w060 (HF refined labels, mask>127, label>127 = ink), maps = ink-sdk 2df3ab50
+# reader-v3 and rectina-m4 probability_reverse.npy (<ink-sdk output>/1447wNNN/...), every 2nd pixel.
+# ink = sqrt(v3*rect) >= thi ; blank = max(v3,rect) <= tlo ; rest ignored.
+w058 0.6 0.3 ink cov 0.109 prec 0.881 | blank cov 0.556 purity 0.924 | ink recall 0.394
+w058 0.7 0.3 ink cov 0.066 prec 0.936 | blank cov 0.556 purity 0.924 | ink recall 0.255
+w058 0.6 0.25 ink cov 0.109 prec 0.881 | blank cov 0.213 purity 0.970 | ink recall 0.394
+w060 0.6 0.3 ink cov 0.057 prec 0.899 | blank cov 0.565 purity 0.884 | ink recall 0.196
+w060 0.7 0.3 ink cov 0.032 prec 0.956 | blank cov 0.565 purity 0.884 | ink recall 0.117
+w060 0.6 0.25 ink cov 0.057 prec 0.899 | blank cov 0.101 purity 0.939 | ink recall 0.196
+# Map value range (w058 valid px): v3 p1 0.212, p50 0.271, p90 0.635, p99 0.812 (label-smoothed outputs); rect similar.
+# Chosen a priori for scroll-adapt: thi 0.6, tlo 0.3 (not tuned on test windings beyond this one table).

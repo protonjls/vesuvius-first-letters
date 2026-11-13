@@ -1,0 +1,161 @@
+{
+ "description": "reader-v3 scroll-adapt fine-tune on consensus pseudo-labels",
+ "mode": "flat",
+ "model_type": "vesuvius_unet_3d_stem_2d",
+ "model_config": {
+  "autoconfigure": true,
+  "basic_encoder_block": "BasicBlockD",
+  "basic_decoder_block": "ConvBlock",
+  "stem_channels": 16,
+  "z_projection_mode": "none",
+  "features_per_stage": [
+   32,
+   64,
+   128,
+   256,
+   320,
+   320
+  ],
+  "n_blocks_per_stage": [
+   1,
+   3,
+   4,
+   6,
+   6,
+   6
+  ],
+  "n_conv_per_stage_decoder": [
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "strides": [
+   [
+    1,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ]
+  ],
+  "pool_op_kernel_sizes": [
+   [
+    1,
+    1
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ],
+   [
+    2,
+    2
+   ]
+  ]
+ },
+ "targets": {
+  "ink": {
+   "activation": "none",
+   "out_channels": 1,
+   "z_projection_mode": "none"
+  }
+ },
+ "in_channels": 1,
+ "patch_size": [
+  17,
+  384,
+  384
+ ],
+ "patch_overlap": 0.25,
+ "patch_min_labeled_coverage": 0.0,
+ "flat_z_window_jitter": {
+  "enabled": true,
+  "window_depth": 17,
+  "max_offset": 2,
+  "probability": 1.0,
+  "padding": "forbidden"
+ },
+ "image_normalization": {
+  "mode": "robust_mad",
+  "percentile_lower": 1.0,
+  "percentile_upper": 99.0
+ },
+ "augmentation_preset": "default",
+ "augmentation_rotation_axes": [
+  0
+ ],
+ "loss": {
+  "bce_label_smoothing": 0.5,
+  "dice_label_smoothing": 0.0
+ },
+ "optimizer": "sgd",
+ "learning_rate": 0.0003,
+ "weight_decay": 3e-05,
+ "scheduler": {
+  "name": "diffusers_cosine_warmup"
+ },
+ "warmup_steps": 100,
+ "grad_clip": 1.0,
+ "mixed_precision": "fp16",
+ "batch_size": 4,
+ "num_iterations": 3000,
+ "seed": 42,
+ "sampling_strategy": "uniform",
+ "best_checkpoint_metric": "val_balanced_accuracy",
+ "save_every": 1000,
+ "val_every": 3001,
+ "val_steps": 1,
+ "val_preview_batches": 1,
+ "log_every": 50,
+ "dataloader_workers": 3,
+ "pin_memory": true,
+ "ema": {
+  "enabled": false
+ },
+ "checkpoint": "$MODELS/reader-v3/reader-v3.pth",
+ "weights_only": true,
+ "out_dir": "$WORK/ft",
+ "datasets": [
+  {
+   "segments_path": "$WORK/data/segments",
+   "segments": [
+    "w062"
+   ],
+   "surface_volume_paths": {
+    "w062": "$WORK/data/volumes/w062.zarr"
+   },
+   "volume_scale": 0
+  }
+ ]
+}
