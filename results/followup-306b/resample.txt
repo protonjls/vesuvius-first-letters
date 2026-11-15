@@ -1,0 +1,2 @@
+normal distance A->B: median 0.5 p90 16.1 vox; nearest-node dist median 8.9
+wrote $OUT/reader-v3_fwd_in_winners_frame.png (800, 2600)

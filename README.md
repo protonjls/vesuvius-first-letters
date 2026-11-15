@@ -22,6 +22,8 @@ produced each number are in this repository.
   you trust its gains.
 - Teams running reader-v3 surveys: one flag (`--tta-mirror`) gave a small, consistent AUC gain on three held-out
   known-text tests.
+- Teams with a candidate spot from a sweep: `followup/` grows a local surface around it, maps it with public
+  models and runs the false-positive controls, on CPU only. It was checked on the awarded PHerc0306B line.
 - Anyone considering self-training from public-model consensus: here is a measured negative result, with the
   pseudo-label quality that produced it.
 

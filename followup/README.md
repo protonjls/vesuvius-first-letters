@@ -30,6 +30,21 @@ flipped top-to-bottom into their reading orientation (ink dark). The first line 
 positions as in their TRACE v3B × A-hn image. Over that window the two surfaces lie a median 0.5 voxels apart along
 the normal. Numbers and control statistics are in [`results/followup-306b/`](../results/followup-306b/).
 
+Controls on the 2400x2400-pixel window over the line (forward order; Pearson r of each variant's map with the d0
+map, from `results/followup-306b/controls_stats.json`):
+
+| variant | reader-v3 r | rectina-m4 r |
+|---|---|---|
+| window centre d−2 / d−1 | 0.970 / 0.988 | 0.969 / 0.989 |
+| window centre d+1 / d+2 | 0.986 / 0.959 | 0.988 / 0.960 |
+| 15 voxels off the sheet, −15 / +15 | 0.039 / 0.133 | 0.034 / 0.180 |
+| depth-shuffled layers | −0.005 | 0.055 |
+
+The two models agree at d0 (r 0.896 in this order). The line persists under small depth shifts and vanishes off the
+sheet and under shuffling ([montage](../results/followup-306b/controls_montage_fwd.jpg)). This is what real surface
+ink looks like under these controls. A spot whose map changes strongly at d±1, or survives off the sheet or
+shuffling, is suspect.
+
 So, on this region, a freshly grown GrowPatch surface plus public reader-v3 shows the awarded line. A spot that
 stays blob-like after this follow-up is unlikely to be rescued by a better local surface alone.
 
@@ -45,7 +60,7 @@ Environment (as in [`../docs/environment.md`](../docs/environment.md)):
   (scratch; default `$SLURM_TMPDIR`).
 
 ```bash
-# demo (about 3 h on 16 CPU cores: grow 27 min, reader-v3 45 min, controls 1-2 h)
+# demo (3.1 h on one 16-core CPU node: grow 18 min, reader-v3 42 min, controls 2 h; CPU speed varies by node)
 VC3D=... INKSDK=... KPY=... VILLA_SRC=... MODELS_DIR=... bash followup/demo_306b.sh out/demo306b
 
 # your own spot: seed = a 3-D point on the sheet (x y z voxels), e.g. a vertex of the sweep mesh under the spot

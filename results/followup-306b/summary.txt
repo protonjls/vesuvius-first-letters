@@ -1,0 +1,29 @@
+demo_306b summary
+grow_region: seed 3559 3224 9348 gens=140 step=20 surf=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/representations/predictions/surfaces/20250521133212-surface-20260413222639-surface-m7-L0-th0.2.zarr ngrid=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/representations/predictions/surfaces/20250521133212-surface-20260413222639-surface-m7-L0-th0.2.normal-grids ct=https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/volumes/20250521133212-8.640um-1.2m-116keV-masked.zarr um=8.64 NL=24 profiles=ink_9um@reader-v3
+probe https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/representations/predictions/surfaces/20250521133212-surface-20260413222639-surface-m7-L0-th0.2.zarr/.zattrs 200
+probe https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/representations/predictions/surfaces/20250521133212-surface-20260413222639-surface-m7-L0-th0.2.normal-grids/metadata.json 200
+probe https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0306B/volumes/20250521133212-8.640um-1.2m-116keV-masked.zarr/.zattrs 200
+grow rc=0 1057 s
+-> done 77280 | fringe 1108 | area 2307.57 mm^2 (0.002308 m^2) | avg speed 2.19 mm^2/s (0.189239 m^2/day) | current speed 0.90 mm^2/s
+generated surface 34441621.260951 vx^2 (25.710535 cm^2)
+saving $WORK/grow/auto_grown_20261115000803138
+render 32 s
+render (24, 5640, 5640) uint8
+reader-v3 infer 2509 s
+done
+normal distance A->B: median 0.5 p90 16.1 vox; nearest-node dist median 8.9
+wrote $OUT/reader-v3_fwd_in_winners_frame.png (800, 2600)
+line anchor: grid node 138 115 (distance 3.2 vox)
+order fwd: r_d0 / contrast per variant
+variant               reader-v3            rectina-m4
+d-2             0.970    0.388       0.969    0.408
+d-1             0.988    0.376       0.989    0.408
+d0              1.000    0.376       1.000    0.404
+d+1             0.986    0.376       0.988    0.404
+d+2             0.959    0.380       0.960    0.408
+off-15          0.039    0.286       0.034    0.278
+off+15          0.133    0.255       0.180    0.267
+shuf           -0.005    0.153       0.055    0.102
+cross-model d0 reader-v3~rectina-m4_fwd: r 0.896
+cross-model d0 reader-v3~rectina-m4_rev: r 0.680
+done
