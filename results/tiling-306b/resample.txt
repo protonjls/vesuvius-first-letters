@@ -1,0 +1,4 @@
+normal distance A->B: median 0.5 p90 64.3 vox; nearest-node dist median 9.8
+wrote $OUT/w0405_fwd_in_winners.png (800, 2600)
+normal distance A->B: median 0.5 p90 64.3 vox; nearest-node dist median 9.8
+wrote $OUT/w0405_rev_in_winners.png (800, 2600)

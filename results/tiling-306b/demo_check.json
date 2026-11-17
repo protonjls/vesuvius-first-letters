@@ -1,0 +1,20 @@
+{
+ "reference": "<checkout>/results/followup-306b/reader-v3_fwd_in_winners_frame_reading.jpg",
+ "shift_px": 150,
+ "fwd": {
+  "r": 0.8605375062526963,
+  "r_shifted": [
+   0.3815565935653252,
+   0.31492703081580425
+  ],
+  "n_px": 1537623
+ },
+ "rev": {
+  "r": 0.1728900479767637,
+  "r_shifted": [
+   0.06380023434148477,
+   0.11717036510411437
+  ],
+  "n_px": 1537623
+ }
+}

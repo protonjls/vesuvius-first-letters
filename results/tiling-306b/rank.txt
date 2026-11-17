@@ -1,0 +1,2 @@
+  0 demo306b w0405 reader-v3    fwd y288 x0 score 0.1620 mass 0.1070 rows 0.22 cols 0.30
+  1 demo306b w0405 reader-v3    rev y0 x576 score 0.1546 mass 0.1023 rows 0.28 cols 0.23

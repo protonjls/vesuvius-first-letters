@@ -1,0 +1,8 @@
+PASS seeds_parallel: 82 seeds, per full tile 10-11
+PASS seeds_rings: 128 seeds, 1.00 of radial steps = ring spacing
+PASS mask_cli: kept 2196 nodes, 0.712 cm2, covered [0, 1, 4]
+PASS next_part: next 2, part 2/3 -> 6
+PASS rank_text: order ['w001', 'w002', 'w003', 'w004'] (w001 text rows, w002 blobs, w003 streaks, w004 rotated rows), scores {'w001': 13.453, 'w002': 10.733, 'w003': 9.792, 'w004': 9.462}
+PASS coverage: B (3 vox off, cols 0-20): frac 0.5366 (expect 0.5366) median dn 2.9999999999925; C (8 vox off): frac 0.000
+6/6 passed
+tests rc=0
