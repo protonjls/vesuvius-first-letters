@@ -12,6 +12,8 @@ Needs numpy, scipy, opencv, tifffile, numcodecs, Pillow. Each test states the an
                   region holding the seed (node count and crop known), covers the seeds on that region within --dedup
                   and no seed off it (off-plane by 20 vox, or on the other region).
   next_part       patch.py next skips done/covered seeds and honours --part.
+  coverage        a plane and copies of half of it 3 and 8 voxels off: coverage.py reports 22/41 columns covered at
+                  dn 3 vox (half + one edge cell), and nothing at 8 vox (tol 5).
   rank_text       ink maps with (a) rows of letter-like glyphs, (b) the same glyph count as a random blob field,
                   (c) vertical streaks, (d) the glyph rows rotated 90 degrees: rank.py puts (a) first.
 """
@@ -220,6 +222,33 @@ def test_rank_text():
     report('rank_text', order[:1] == ['w001'], f'order {order} (w001 text rows, w002 blobs, w003 streaks, w004 rotated rows), scores {sc}')
 
 
+def test_coverage():
+    """Reference plane A (41x41 nodes, 20 vox cells); patch B = the same plane shifted 3 vox along the normal over
+    A's columns 0-20 only, and a second patch C shifted 8 vox: coverage.py must give dn 3 vox and 22 of 41 columns
+    covered for B (columns 0-20, plus column 21, one cell past B's edge, within the documented 1.5-cell in-plane
+    allowance) at tol 5, and nothing for C."""
+    import tifffile
+    tmp = tempfile.mkdtemp(prefix='tiling_cov_')
+    jj, ii = np.meshgrid(np.arange(41), np.arange(41))
+    A = np.stack([1000 + 20.0 * jj, 2000 + 20.0 * ii, np.full((41, 41), 5000.0)], -1)
+    write_mesh(f'{tmp}/A', A)
+    jb, ib = np.meshgrid(np.arange(21), np.arange(41))
+    Bm = np.stack([1000 + 20.0 * jb, 2000 + 20.0 * ib, np.full((41, 21), 5003.0)], -1)
+    write_mesh(f'{tmp}/B', Bm)
+    Cm = Bm.copy(); Cm[..., 2] = 5008.0
+    write_mesh(f'{tmp}/C', Cm)
+    out = {}
+    for k in 'BC':
+        r = subprocess.run([sys.executable, f'{KIT}/coverage.py', f'{tmp}/A', f'{tmp}/{k}', '--tol', '5'],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            report('coverage', False, r.stderr[-400:]); return
+        out[k] = json.loads(r.stdout.strip().splitlines()[-1])
+    fb, mb, fc = out['B']['frac_within_tol'], out['B']['median_dn_within_tol'], out['C']['frac_within_tol']
+    ok = abs(fb - 22 / 41) < 1e-9 and mb is not None and abs(mb - 3.0) < 1e-6 and fc == 0.0
+    report('coverage', ok, f'B (3 vox off, cols 0-20): frac {fb:.4f} (expect {22 / 41:.4f}) median dn {mb}; C (8 vox off): frac {fc:.3f}')
+
+
 if __name__ == '__main__':
     test_seeds_parallel()
     test_seeds_rings()
@@ -227,5 +256,6 @@ if __name__ == '__main__':
     if t:
         test_next_part(t)
     test_rank_text()
+    test_coverage()
     print(f'{sum(RESULTS)}/{len(RESULTS)} passed')
     sys.exit(0 if all(RESULTS) else 1)
