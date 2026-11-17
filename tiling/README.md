@@ -1,10 +1,10 @@
-# tiling: cover every sheet of a scroll region with GrowPatch patches, then rank them for review (CPU)
+# tiling: cover every sheet of a scroll region with GrowPatch patches, then rank and sheet them for review (CPU)
 
 Spiral-fit sweeps give one mesh per winding. Those meshes are a few voxels off the sheet in many places, and in crushed
 or folded regions they leave the sheet entirely. The PHerc0306B and PHerc0211 First Letters winners both read their text
 on locally grown or hand-refined surfaces. This kit grows such surfaces automatically for **every** sheet that crosses a
-window of one axial slice, with no umbilicus and no hand picks. It then renders them, runs a public ink model and ranks
-4 cm² windows for a human or agent reviewer.
+window of one axial slice, with no umbilicus and no hand picks. It then renders them, runs a public ink model, ranks
+4 cm² windows and lays out every patch on contact sheets for a human or agent reviewer.
 
 | step | script | what it does |
 |---|---|---|
@@ -12,10 +12,12 @@ window of one axial slice, with no umbilicus and no hand picks. It then renders 
 | 2 | `tile_grow.sh` | Takes the seeds in order and skips any seed already covered by an earlier patch. For each remaining seed it runs VC3D `vc_grow_seg_from_seed` (step 20, N generations, public normal grids), renders the surface prediction along the new mesh (7 layers) and calls `patch.py mask`. That step keeps only the connected on-sheet part that holds the seed and marks every seed within 5 voxels of it as covered. It is resumable, and `PART=k/K` splits the window into tile-column groups for parallel jobs. |
 | 3 | `ink_patches.sh` | Runs a CT render (24 layers) and ink-sdk models (default reader-v3) in both depth orders for every kept patch. |
 | 4 | `rank.py` | Ranks 20 mm windows by text-likeness: letter-scale ink excess, plus line and letter spacing in the row and column profiles. It writes a JSON list and a contact sheet of the top windows. It is a review aid, not a detector. |
+| 5 | `sheets.py` | Contact sheets of **every** patch (forward and reverse map side by side, 1 cm bar), under anonymised codes in a seeded random order, with the code-to-patch key written separately. This is for a full review that does not depend on `rank.py` windows. `REVIEW.md` is the reviewer brief we use. |
+| – | `review_coverage.py` | Reports how much of the on-sheet surface, counted once in 3D, lies inside scored `rank.py` windows and inside the top N. |
 | – | `coverage.py` | Reports the fraction of a reference mesh (e.g. a published claim mesh) that lies within `tol` voxels of a patch, measured along the patch normal. |
 | – | `demo_check.py` | Compares a map resampled into a reference frame (`../followup/mesh_resample.py`) with a reference reading view, with shifted controls. |
 | – | `demo_306b.sh` | Known-answer demo (below). |
-| – | `tests/test_tiling.py` | Synthetic known-answer tests, CPU, about 1 min: seeds on parallel and ring sheets, the mask CLI, seed order and parts, rank order (text rows > blob field > streaks > rotated rows), and coverage. |
+| – | `tests/test_tiling.py` | Synthetic known-answer tests, CPU, about 1 min: seeds on parallel and ring sheets, the mask CLI, seed order and parts, rank order (text rows > blob field > streaks > rotated rows), coverage, sheet layout and key, and review coverage. |
 
 Environment: as `../followup/` (VC3D f0e4410 command-line tools, ink-sdk with koine, python with numpy, scipy,
 tifffile, zarr 2, opencv and numcodecs); see `../docs/environment.md`. VC3D streams the CT, the predictions and the
@@ -36,9 +38,18 @@ GrowPatch at 100 generations, step 20.
 - **Legibility.** On patch 405, public reader-v3 in forward order shows the awarded first line, with the same letter
   forms at the same positions as the v0.2 followup reference: Pearson r 0.861 between reading views. With the
   reference shifted ±15 cells, r is 0.36 and 0.29. Reverse order gives 0.16, with blobs only.
-- **Triage.** Whether `rank.py` puts a window of patch 405 or 231 among the top 36 of all windows of the 199 patches
-  (the depth of one review sheet) was not yet measured at this release; the ink maps of the full window were still
-  being computed. The result will be added here.
+- **Triage by rank.py.** With 20 mm windows that are at least 60% on-sheet, `rank.py` scored 896 windows on 74 of the
+  199 patches. A forward-order window of patch 231 ranked 4th, and that window contains the awarded line as visible
+  letter forms. The best window of patch 405 ranked 91st. So the text reached the top-36 review sheet, but the ranking
+  has a blind spot. Counted once in 3D (`review_coverage.py`, 20-voxel cubes, 15-voxel tolerance), the scored windows
+  reach only 41% of the window's on-sheet surface and the top 36 reach 5%. Text on the other 59% would never be ranked.
+- **Full review with sheets.py.** We fixed the test before making the sheets. A fresh review agent (Claude Opus 5.5)
+  graded every tile of 25 sheets (199 patches, both orders, 480 px per map, anonymised codes, key withheld), knowing
+  only that the window might or might not hold text. It graded patch 231 forward **strong** ("a horizontal line of
+  about 7–9 separate stroke shapes") and patch 405 forward **candidate**, the two patches that cover the claim. It
+  graded 5 other tiles candidate (the bar was at most 10) and 8 weak, all on patches that do not touch the claim
+  surface. Every patch appears on a sheet in both orders, so the full review sees the whole tiled surface,
+  at 4× reduced resolution. We now run both reviews on every window.
 
 `demo_306b.sh` reproduces the covering patch from the released scripts. It computes the 827 seeds (and checks them
 against `results/tiling-306b/seeds_kat_window.tsv`), grows seed 405, runs reader-v3, measures coverage against the
@@ -60,7 +71,9 @@ and the m7 prediction alone does not supply it.
 ## Limits
 - Each patch is a local surface. Patches from different seeds on one sheet overlap and can have opposite normals, so
   the same ink can appear in one patch's forward map and in another's reverse map. Review both orders.
-- `rank.py` skips patches that have no 20 mm window at least 60% on-sheet. Use 100 or more generations, which give
-  patches about 4 cm across.
+- `rank.py` skips patches that have no 20 mm window at least 60% on-sheet, even at 100 generations (on PHerc0306B,
+  125 of 199 patches and 59% of the on-sheet surface). Review the `sheets.py` sheets as well, not only the top windows.
+- A review agent's grades are proposals to verify, not results. On PHerc0306B it also flagged 5 tiles away from the
+  claim; we have not checked whether they are text or false positives, and we report no reading from them.
 - Cost: on PHerc0306B, about 230 grows of 100 generations per 1800×1800-voxel window (~18 h on 16 CPUs), plus
   reader-v3 at 3–50 min per patch on CPU, depending on the node, or a few minutes on a GPU slice.

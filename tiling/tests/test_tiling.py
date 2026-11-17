@@ -16,6 +16,12 @@ Needs numpy, scipy, opencv, tifffile, numcodecs, Pillow. Each test states the an
                   dn 3 vox (half + one edge cell), and nothing at 8 vox (tol 5).
   rank_text       ink maps with (a) rows of letter-like glyphs, (b) the same glyph count as a random blob field,
                   (c) vertical streaks, (d) the glyph rows rotated 90 degrees: rank.py puts (a) first.
+  sheets          10 synthetic patches: sheets.py writes 2 sheets (8 per sheet), a key with 10 distinct codes that map
+                  one-to-one onto the patches, a code order that differs from the patch-id order (shuffled), and no key in
+                  the sheet directory when --key points elsewhere.
+  review_coverage plane patch A (41x41 nodes) fully inside one scored window, patch B on the same plane 2 vox off
+                  overlapping A's right half and extending 20 columns past it, with no window: 41 of 61 columns of the
+                  union surface are reachable (0.672); the top-1 window gives the same, a top-0 list gives 0.
 """
 import json, os, subprocess, sys, tempfile
 import numpy as np
@@ -249,6 +255,46 @@ def test_coverage():
     report('coverage', ok, f'B (3 vox off, cols 0-20): frac {fb:.4f} (expect {22 / 41:.4f}) median dn {mb}; C (8 vox off): frac {fc:.3f}')
 
 
+def test_sheets():
+    from PIL import Image
+    tmp = tempfile.mkdtemp(prefix='tiling_sheets_')
+    for i in range(10):
+        d = f'{tmp}/maps/syn/w{100 + i:04d}'; os.makedirs(d)
+        for o in ('fwd', 'rev'):
+            Image.fromarray(np.full((300, 400), 20 * i, np.uint8)).save(f'{d}/reader-v3_{o}.png')
+        json.dump({'pixel_um': 9.0, 'png_ds': 2}, open(f'{d}/meta.json', 'w'))
+    r = subprocess.run([sys.executable, f'{KIT}/sheets.py', f'{tmp}/maps', f'{tmp}/out', '--key', f'{tmp}/key.tsv',
+                        '--seed', '3'], capture_output=True, text=True)
+    if r.returncode != 0:
+        report('sheets', False, r.stderr[-400:]); return
+    jpgs = sorted(f for f in os.listdir(f'{tmp}/out') if f.endswith('.jpg'))
+    rows = [l.rstrip('\n').split('\t') for l in open(f'{tmp}/key.tsv')][1:]
+    codes, pats = [x[0] for x in rows], [x[2] for x in rows]
+    ok = (jpgs == ['sheet_01.jpg', 'sheet_02.jpg'] and len(set(codes)) == 10 and sorted(pats) == [f'w{100 + i:04d}' for i in range(10)]
+          and [c for _, c in sorted(zip(pats, codes))] != sorted(codes) and not os.path.exists(f'{tmp}/out/key.tsv'))
+    report('sheets', ok, f'sheets {jpgs}, codes {len(set(codes))} distinct, patches {len(set(pats))}')
+
+
+def test_review_coverage():
+    tmp = tempfile.mkdtemp(prefix='tiling_revcov_')
+    jj, ii = np.meshgrid(np.arange(41), np.arange(41))
+    A = np.stack([1000 + 20.0 * jj, 2000 + 20.0 * ii, np.full((41, 41), 5000.0)], -1)
+    B = np.stack([1400 + 20.0 * jj, 2000 + 20.0 * ii, np.full((41, 41), 5002.0)], -1)
+    write_mesh(f'{tmp}/patches/w0001', A); write_mesh(f'{tmp}/patches/w0002', B)
+    np.savez(f'{tmp}/rank.npz', winding=np.array(['w0001']), y=np.array([0]), x=np.array([0]), side=np.array([410]),
+             score=np.array([1.0]), band=np.array(['syn']), model=np.array(['m']), order=np.array(['fwd']))
+    out = {}
+    for top in (1, 0):
+        r = subprocess.run([sys.executable, f'{KIT}/review_coverage.py', f'{tmp}/rank.npz', f'{tmp}/patches', '--top', str(top)],
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            report('review_coverage', False, r.stderr[-400:]); return
+        out[top] = eval(r.stdout.strip().splitlines()[-1])
+    fs, f1, f0 = out[1]['frac_scored'], out[1]['frac_top1'], out[0]['frac_top0']
+    ok = abs(fs - 41 / 61) < 0.01 and abs(f1 - fs) < 1e-9 and f0 == 0.0 and out[1]['patches_scored'] == 1
+    report('review_coverage', ok, f'scored {fs:.3f} (expect {41 / 61:.3f}), top1 {f1:.3f}, top0 {f0:.3f}')
+
+
 if __name__ == '__main__':
     test_seeds_parallel()
     test_seeds_rings()
@@ -257,5 +303,7 @@ if __name__ == '__main__':
         test_next_part(t)
     test_rank_text()
     test_coverage()
+    test_sheets()
+    test_review_coverage()
     print(f'{sum(RESULTS)}/{len(RESULTS)} passed')
     sys.exit(0 if all(RESULTS) else 1)

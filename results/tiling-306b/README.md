@@ -20,3 +20,6 @@ Files:
 
 The demo grows only seed 405 (`ONLY=405`, the default). `ONLY=all` grows the whole window. That took 228 grows and
 about 18 h on 16 CPUs in our full run, and its numbers are quoted in `tiling/README.md`.
+
+The triage of the full 199-patch window (rank of the text window, review coverage, blind full-sheet review) is in
+`triage_full_window.md`.
