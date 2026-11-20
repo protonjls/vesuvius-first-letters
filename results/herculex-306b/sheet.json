@@ -1,0 +1,34 @@
+{
+ "models": [
+  "reader-v3",
+  "rectina-m4"
+ ],
+ "ct_face": "piece-7000024.png",
+ "ct_face_r": {
+  "none": 0.651,
+  "rows": 0.049,
+  "cols": -0.066,
+  "both": -0.046
+ },
+ "flip": "none",
+ "ct_face_best_r": 0.651,
+ "ink_face": "piece-7000024-taught.png",
+ "ink_face_r": {
+  "none/fwd": 0.04,
+  "none/rev": 0.842
+ },
+ "ink_best": "none/rev",
+ "ink_best_r": 0.842,
+ "order": "rev",
+ "contrast_p99_p50": {
+  "reader-v3": 124.0,
+  "rectina-m4": 129.0
+ },
+ "xmodel_r": {
+  "reader-v3~rectina-m4": 0.897
+ },
+ "xmodel_r_box": {
+  "reader-v3~rectina-m4": 0.894
+ },
+ "sheet": "sheet.jpg"
+}

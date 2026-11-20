@@ -1,0 +1,17 @@
+herculex demo_306b summary
+piece <clone>/results/herculex-306b/piece-7000024 grid 129x144 stride 16 render 2304x2064
+order fwd: r_d0 / contrast per variant
+variant               reader-v3            rectina-m4
+d-2             0.884    0.282       0.882    0.263
+d-1             0.960    0.302       0.958    0.278
+d0              1.000    0.310       1.000    0.278
+d+1             0.963    0.302       0.967    0.278
+d+2             0.894    0.286       0.900    0.298
+off-15          0.110    0.361       0.104    0.361
+off+15          0.022    0.282       0.004    0.259
+shuf            0.018    0.110       0.035    0.106
+cross-model d0 reader-v3~rectina-m4_fwd: r 0.738
+cross-model d0 reader-v3~rectina-m4_rev: r 0.899
+done
+place_check: {"ref_nodes": 12100, "overlap_nodes": 6341, "overlap_share": 0.524, "normal_dn_median": 2.75, "normal_dn_p10": 0.46, "normal_dn_p90": 7.13, "share_le5": 0.774, "node_dist_median": 7.54, "cand_rows": [2, 90], "cand_cols": [0, 143], "cand_render_box_xyxy": [0, 32, 2304, 1456]}
+sheet: {"models": ["reader-v3", "rectina-m4"], "ct_face": "piece-7000024.png", "ct_face_r": {"none": 0.651, "rows": 0.049, "cols": -0.066, "both": -0.046}, "flip": "none", "ct_face_best_r": 0.651, "ink_face": "piece-7000024-taught.png", "ink_face_r": {"none/fwd": 0.04, "none/rev": 0.842}, "ink_best": "none/rev", "ink_best_r": 0.842, "order": "rev", "contrast_p99_p50": {"reader-v3": 124.0, "rectina-m4": 129.0}, "xmodel_r": {"reader-v3~rectina-m4": 0.897}, "xmodel_r_box": {"reader-v3~rectina-m4": 0.894}, "sheet": "<out>/sheet.png"}
