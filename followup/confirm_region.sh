@@ -8,6 +8,7 @@
 #
 #   x0 y0 side: square window in RENDER pixels of the full-mesh render at scale 1 (grow_region.sh: grid node (r, c) =
 #   render pixel (r*STEP, c*STEP)).
+#   CROP_H (env, default side): window height for a non-square window (herculex/piece_confirm.sh renders a whole piece).
 # Env: as grow_region.sh (VC3D, INKSDK, KPY, VILLA_SRC, MODELS_DIR, WRAP, WORK, NCPU, CACHE_GB) plus
 #   PROFILES (default "ink_9um@reader-v3 ink_9um@rectina-m4"), N (render layers, 56: the off+-15 variants need N >= 54),
 #   ORDER (fwd|rev: depth order shown in the montage, default rev), VSEL (space-separated variant names to run; default all)
@@ -23,11 +24,11 @@ mkdir -p $OUT/maps; OUT=$(cd $OUT && pwd); MESH=$(cd $MESH && pwd)
 T=$(mktemp -d ${WORK:-${SLURM_TMPDIR:-/tmp}}/confirm.XXXXXX); mkdir -p $T/home
 LOG=$OUT/run.log
 run() { $WRAP "$@"; }
-echo "confirm_region: mesh $MESH ct $URL um=$PUM window x0=$X0 y0=$Y0 side=$SIDE N=$N profiles=$PROFILES" | tee $LOG
+echo "confirm_region: mesh $MESH ct $URL um=$PUM window x0=$X0 y0=$Y0 side=$SIDE crop_h=${CROP_H:-$SIDE} N=$N profiles=$PROFILES" | tee $LOG
 t0=$(date +%s)
 env HOME=$T/home XDG_CACHE_HOME=$T/xdgcache XDG_CONFIG_HOME=$T/xdgconfig QT_QPA_PLATFORM=offscreen OMP_NUM_THREADS=$NCPU \
   $VC3D vc_render_tifxyz --volume "$URL" --group-idx 0 --scale 1 --segmentation $MESH \
-  --num-slices $N --slice-step 1 --cache-gb ${CACHE_GB:-10} --crop-x $X0 --crop-y $Y0 --crop-width $SIDE --crop-height $SIDE \
+  --num-slices $N --slice-step 1 --cache-gb ${CACHE_GB:-10} --crop-x $X0 --crop-y $Y0 --crop-width $SIDE --crop-height ${CROP_H:-$SIDE} \
   --zarr-output $T/sv.zarr > $T/render.log 2>&1 || { echo "render failed"; tail -5 $T/render.log; exit 4; }
 echo "render $(( $(date +%s) - t0 )) s" | tee -a $LOG
 run $KPY $KIT/variants.py --sv $T/sv.zarr --outdir $T/var > $OUT/manifest.json || { echo "variants failed"; exit 5; }
