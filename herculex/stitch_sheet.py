@@ -9,9 +9,11 @@ per model, one contrast stretch for all its panels. Block boundaries come from <
 block offsets x the render stride, 1 / meta.json scale) and are drawn as dashed lines: a text line that runs across a
 boundary shows that the stitched surface carries it from one HerculeX piece into the next. --box (render pixels of
 the full stitched render, e.g. place_check.py cand_render_box_xyxy) is drawn as a red box. --x0/--y0 = the window
-origin passed to confirm_region.sh. --order auto (default) uses stats.json: the order whose first-model off+15 r_d0
-is lower (better separated from the sheet). Prints a JSON report: order, boundaries in window pixels, control r_d0
-per model from stats.json.
+origin passed to confirm_region.sh. --order auto (default) uses the order with the larger first-model d0 contrast
+(p99 - p50 over pixels with CT), the rule of piece_sheet.py. (A rule 'lower off+15 r_d0' picked fwd on the PHerc0306B
+demo window, where the awarded line is only visible in rev: off+15 r_d0 is ~0 in both orders and does not tell them
+apart.) Prints a JSON report: order, contrast per order, boundaries in window pixels, control r_d0 per model from
+stats.json.
 """
 import argparse
 import json
@@ -42,10 +44,16 @@ def main():
     models = stats.get('models') or sorted({k.split('/')[1].rsplit('_', 1)[0] for k in stats['per_map']})
     pm = stats['per_map']
     order = a.order
+    con = {}
+    ctv = load(os.path.join(a.dir, 'ct_d0.png')) > 0
+    for o in ('fwd', 'rev'):
+        f = os.path.join(a.dir, 'maps', 'd0', f'{models[0]}_{o}.png')
+        if os.path.exists(f):
+            v = load(f)[ctv] if ctv.any() else load(f).ravel()
+            con[o] = round(float(np.percentile(v, 99) - np.percentile(v, 50)), 1)
     if order == 'auto':
-        cand = [(pm.get(f'off+15/{models[0]}_{o}', {}).get('r_d0', 1.0), o) for o in ('rev', 'fwd')]
-        order = min(cand)[1]
-    rep = {'order': order, 'controls_r_d0': {}}
+        order = max(con, key=con.get)
+    rep = {'order': order, 'contrast_p99_p50': con, 'controls_r_d0': {}}
     for m in models:
         rep['controls_r_d0'][m] = {v: round(pm[f'{v}/{m}_{order}']['r_d0'], 3)
                                    for v in ('off+15', 'off-15', 'shuf', 'd-1', 'd+1', 'd-2', 'd+2')
