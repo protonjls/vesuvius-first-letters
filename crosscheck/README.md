@@ -53,3 +53,19 @@ python3 crosscheck/reappear.py <meshA> <mapsA> <meshB> <mapsB> <out_dir> --rows 
 2:90 cols 0:143, the part of the piece that overlaps the winners' claim box. The GrowPatch mesh is shipped in
 `../results/crosscheck-306b/grow-mesh`: VC3D f0e4410 `vc_grow_seg_from_seed` on the public m7 surface prediction,
 seed 3559 3224 9348, 140 generations, step 20. Results from a clean checkout are in `../results/crosscheck-306b/`.
+
+Clean-checkout result (commit b6b56d7, CPU, 16 cores, demo 425 s; `results/crosscheck-306b/summary.txt`):
+
+| | reader-v3 | rectina-m4 |
+|---|---|---|
+| best order pair (A rev, B fwd), r | 0.685 | 0.736 |
+| other order pairs, r | −0.085 to 0.283 | −0.057 to 0.304 |
+| same pair, B shifted 160 px (about half a letter), r | 0.122 | 0.112 |
+
+The two meshes lie a median 3.0 voxels apart along B's normal (90th percentile 8.2), and 88% of the window has CT on
+both. In `reappear_shift0/reappear_sheet.jpg` the awarded line sits at the same place on the HerculeX piece and on the
+resampled GrowPatch mesh, in both models. The pass bar was fixed before the run: r ≥ 0.4 in both models, with the
+shifted r below half of it. The synthetic tests passed 4/4. They are sensitive: a 4-pixel misregistration of the same
+sheet drops r to 0.82, below their 0.95 bar.
+
+Not measured: GPU inference, Docker, other hosts, and meshes from unwrapping methods other than HerculeX and GrowPatch.

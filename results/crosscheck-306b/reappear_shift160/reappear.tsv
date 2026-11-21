@@ -1,0 +1,11 @@
+# A <checkout>/crosscheck/../results/herculex-306b/piece-7000024 rows 2:90 cols 0:143 | B <checkout>/crosscheck/../results/crosscheck-306b/grow-mesh offB 1500,1200 | shift 160
+# normal distance A->B median 3.0276098929654016 p90 8.240406800708744 vox; valid pixels 2821464 of 3221504
+pair	r
+reader-v3 Afwd Bfwd	-0.083
+reader-v3 Afwd Brev	-0.090
+reader-v3 Arev Bfwd	0.122
+reader-v3 Arev Brev	0.052
+rectina-m4 Afwd Bfwd	-0.094
+rectina-m4 Afwd Brev	-0.077
+rectina-m4 Arev Bfwd	0.112
+rectina-m4 Arev Brev	0.055

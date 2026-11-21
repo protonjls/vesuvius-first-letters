@@ -1,0 +1,47 @@
+{
+ "meshA": "<checkout>/crosscheck/../results/herculex-306b/piece-7000024",
+ "meshB": "<checkout>/crosscheck/../results/crosscheck-306b/grow-mesh",
+ "rows": [
+  2,
+  90
+ ],
+ "cols": [
+  0,
+  143
+ ],
+ "ppcA": 16.0,
+ "ppcB": 19.99999970197678,
+ "offB": [
+  1500,
+  1200
+ ],
+ "maxd": 10.0,
+ "shift": 0,
+ "normal_dn_median": 3.0276098929654016,
+ "normal_dn_p90": 8.240406800708744,
+ "nearest_node_dist_median": 9.159612399059263,
+ "valid_pixels": 2821464,
+ "window_pixels": 3221504,
+ "r": {
+  "reader-v3 Afwd Bfwd": -0.08499256128449252,
+  "reader-v3 Afwd Brev": 0.28332661557794053,
+  "reader-v3 Arev Bfwd": 0.6845523641383949,
+  "reader-v3 Arev Brev": 0.04349333237308093,
+  "rectina-m4 Afwd Bfwd": 0.006144428788085427,
+  "rectina-m4 Afwd Brev": 0.3043811002578329,
+  "rectina-m4 Arev Bfwd": 0.7363772349800667,
+  "rectina-m4 Arev Brev": -0.057179152572830606
+ },
+ "best": {
+  "reader-v3": {
+   "r": 0.6845523641383949,
+   "A": "rev",
+   "B": "fwd"
+  },
+  "rectina-m4": {
+   "r": 0.7363772349800667,
+   "A": "rev",
+   "B": "fwd"
+  }
+ }
+}
