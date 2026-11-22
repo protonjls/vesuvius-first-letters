@@ -1,0 +1,1 @@
+{"ref_nodes": 12100, "overlap_nodes": 11918, "overlap_share": 0.985, "normal_dn_median": 3.04, "normal_dn_p10": 0.55, "normal_dn_p90": 8.9, "share_le5": 0.727, "node_dist_median": 7.7, "cand_rows": [98, 190], "cand_cols": [153, 433], "cand_render_box_xyxy": [2448, 1568, 6944, 3056]}

@@ -1,0 +1,10 @@
+stitched 9 pieces of source 24 -> grid 225x531, 82325 valid nodes; max overlap disagreement 0.0 vox
+  piece 24 block [0, 0] shape [128, 128] added 12608 overlap 0 nodes, median/max None/None vox
+  piece 1000024 block [0, 96] shape [128, 144] added 12018 overlap 3349 nodes, median/max 0.0/0.0 vox
+  piece 2000024 block [0, 208] shape [128, 144] added 10648 overlap 3503 nodes, median/max 0.0/0.0 vox
+  piece 3000024 block [0, 320] shape [128, 144] added 11801 overlap 3826 nodes, median/max 0.0/0.0 vox
+  piece 5000024 block [96, 0] shape [129, 128] added 2639 overlap 3885 nodes, median/max 0.0/0.0 vox
+  piece 6000024 block [96, 96] shape [129, 144] added 9469 overlap 4816 nodes, median/max 0.0/0.0 vox
+  piece 7000024 block [96, 208] shape [129, 144] added 10004 overlap 7293 nodes, median/max 0.0/0.0 vox
+  piece 8000024 block [96, 320] shape [129, 144] added 6736 overlap 7489 nodes, median/max 0.0/0.0 vox
+  piece 9000024 block [96, 432] shape [129, 99] added 6402 overlap 1834 nodes, median/max 0.0/0.0 vox

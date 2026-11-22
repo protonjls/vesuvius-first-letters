@@ -1,0 +1,1 @@
+window x0 2320 y0 1440 side 4752 crop_h 1744 (claim box 2448,1568,6944,3056)

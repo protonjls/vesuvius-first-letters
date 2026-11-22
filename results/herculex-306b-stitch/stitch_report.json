@@ -1,0 +1,164 @@
+{
+ "shape": [
+  225,
+  531
+ ],
+ "source": 24,
+ "pieces": [
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-0024",
+   "piece": 24,
+   "block": [
+    0,
+    0
+   ],
+   "shape": [
+    128,
+    128
+   ],
+   "valid": 12608,
+   "added": 12608,
+   "overlap_nodes": 0,
+   "overlap_max_vox": null,
+   "overlap_median_vox": null
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-1000024",
+   "piece": 1000024,
+   "block": [
+    0,
+    96
+   ],
+   "shape": [
+    128,
+    144
+   ],
+   "valid": 15367,
+   "added": 12018,
+   "overlap_nodes": 3349,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-2000024",
+   "piece": 2000024,
+   "block": [
+    0,
+    208
+   ],
+   "shape": [
+    128,
+    144
+   ],
+   "valid": 14151,
+   "added": 10648,
+   "overlap_nodes": 3503,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-3000024",
+   "piece": 3000024,
+   "block": [
+    0,
+    320
+   ],
+   "shape": [
+    128,
+    144
+   ],
+   "valid": 15627,
+   "added": 11801,
+   "overlap_nodes": 3826,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-5000024",
+   "piece": 5000024,
+   "block": [
+    96,
+    0
+   ],
+   "shape": [
+    129,
+    128
+   ],
+   "valid": 6524,
+   "added": 2639,
+   "overlap_nodes": 3885,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-6000024",
+   "piece": 6000024,
+   "block": [
+    96,
+    96
+   ],
+   "shape": [
+    129,
+    144
+   ],
+   "valid": 14285,
+   "added": 9469,
+   "overlap_nodes": 4816,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-7000024",
+   "piece": 7000024,
+   "block": [
+    96,
+    208
+   ],
+   "shape": [
+    129,
+    144
+   ],
+   "valid": 17297,
+   "added": 10004,
+   "overlap_nodes": 7293,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-8000024",
+   "piece": 8000024,
+   "block": [
+    96,
+    320
+   ],
+   "shape": [
+    129,
+    144
+   ],
+   "valid": 14225,
+   "added": 6736,
+   "overlap_nodes": 7489,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  },
+  {
+   "dir": "<checkout>/results/herculex-306b-stitch/blocks/piece-9000024",
+   "piece": 9000024,
+   "block": [
+    96,
+    432
+   ],
+   "shape": [
+    129,
+    99
+   ],
+   "valid": 8236,
+   "added": 6402,
+   "overlap_nodes": 1834,
+   "overlap_max_vox": 0.0,
+   "overlap_median_vox": 0.0
+  }
+ ],
+ "valid_nodes": 82325,
+ "overlap_max_vox": 0.0
+}

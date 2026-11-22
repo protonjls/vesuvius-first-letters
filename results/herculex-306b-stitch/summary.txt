@@ -1,0 +1,5 @@
+herculex stitch_demo_306b summary
+stitched 9 pieces of source 24 -> grid 225x531, 82325 valid nodes; max overlap disagreement 0.0 vox
+window x0 2320 y0 1440 side 4752 crop_h 1744 (claim box 2448,1568,6944,3056)
+place_check: {"ref_nodes": 12100, "overlap_nodes": 11918, "overlap_share": 0.985, "normal_dn_median": 3.04, "normal_dn_p10": 0.55, "normal_dn_p90": 8.9, "share_le5": 0.727, "node_dist_median": 7.7, "cand_rows": [98, 190], "cand_cols": [153, 433], "cand_render_box_xyxy": [2448, 1568, 6944, 3056]}
+sheet: {"order": "rev", "contrast_p99_p50": {"fwd": 79.0, "rev": 123.0}, "controls_r_d0": {"reader-v3": {"off+15": 0.062, "shuf": 0.03}, "rectina-m4": {"off+15": 0.045, "shuf": 0.054}}, "boundaries_window_px": {"y": [96], "x": [1008, 2800, 4592]}, "sheet": "<out>/sheet.jpg"}

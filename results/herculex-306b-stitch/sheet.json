@@ -1,0 +1,1 @@
+{"order": "rev", "contrast_p99_p50": {"fwd": 79.0, "rev": 123.0}, "controls_r_d0": {"reader-v3": {"off+15": 0.062, "shuf": 0.03}, "rectina-m4": {"off+15": 0.045, "shuf": 0.054}}, "boundaries_window_px": {"y": [96], "x": [1008, 2800, 4592]}, "sheet": "<out>/sheet.jpg"}

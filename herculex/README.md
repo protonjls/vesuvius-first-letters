@@ -70,11 +70,49 @@ Use `VSEL="d0"` for a quick two-model check, then run all variants on the pieces
 about 2000×2000 px takes 3–6 min per model per variant, after a render of under a minute. Environment: as
 [`../followup/`](../followup/) (VC3D, ink-sdk, koine Python with numpy, scipy, PIL and tifffile).
 
+## Stitching the blocks of a source surface
+HerculeX cuts each large source surface into pieces of at most about 2 cm, the "blocks" of that source (piece ids
+`source + k × 1000000`). The blocks of one source share one node grid: `meta.json` `block` = [row0, col0] is the
+piece's node offset in it, and neighbouring blocks overlap by a few border nodes. A row of text longer than a block is
+split across pieces, so a single piece can hold only part of a line.
+
+| script | what it does |
+|---|---|
+| `stitch_blocks.py` | Places every piece of one source at its block offset in one grid and writes one tifxyz (x/y/z.tif, `meta.json`, `stitch_report.json`). Where pieces overlap it keeps the first valid node and reports the disagreement with each later piece (median and max \|dxyz\| in voxels). For blocks of one source this is 0 by construction; a nonzero value means the pieces do not share a grid. It refuses pieces whose `source`, `stride` or `scale` differ. |
+| `stitch_sheet.py` | Review sheet for a `../followup/confirm_region.sh` window on the stitched surface: CT, each model at d0, the first model off the sheet and depth-shuffled. Block boundaries are dashed and the reference box is red. `--order auto` uses the depth order with the larger d0 contrast, the same rule as `piece_sheet.py`. |
+| `stitch_demo_306b.sh` | Known-answer demo on the awarded PHerc0306B line (below). |
+| `tests/test_stitch_blocks.py` | Synthetic known answers: blocks cut from one grid reassemble exactly; pieces of different sources are refused; a block moved by a known amount is reported at that size; command-line round trip. |
+
+```bash
+python3 herculex/stitch_blocks.py --out out/src24 <pieces>/piece-24 <pieces>/piece-1000024 ...   # all blocks of one source
+```
+
+**Known answer: PHerc0306B, source 24.** The demo stitches all 9 written blocks of HerculeX source surface 24, from
+the same HerculeX run as the piece above, shipped in [`../results/herculex-306b-stitch/blocks/`](../results/herculex-306b-stitch/blocks/).
+It place-checks the stitched surface against the winners' claim box, renders the claim box plus a 128 px margin, and
+runs reader-v3 and rectina-m4 with controls on it. Results from a clean checkout (CPU, 16 cores; the demo took 1.5 h and 2.8 h on two nodes):
+
+- **Stitch.** 9 blocks give one 225 × 531 node grid (82,325 valid nodes). Every overlap agrees to 0.0 voxels.
+- **Same surface.** The stitched surface reaches 98.5% of the winners' claim-box nodes, against 52% for the single
+  piece 7000024. Over that overlap the normal distance is median 3.04 voxels (p10 0.55, p90 8.9), and 73% of nodes are
+  within 5 voxels. This is about as close as the single piece over its smaller overlap (2.75 voxels, 77%). We set a
+  bar of median ≤ 3.0 and ≥ 75% within 5 voxels before the run, and the stitched surface narrowly misses it.
+- **Text across a block boundary.** In reverse depth order both models show the awarded line, and it runs across the
+  boundary between blocks 6000024 and 7000024 (dashed line at window x 1008). Control r against d0 (window
+  4752 × 1744 px, reverse order): 15 voxels off the sheet 0.062 (reader-v3) and 0.045 (rectina-m4); depth-shuffled 0.030 and 0.054. Reader-v3 and rectina-m4
+  agree at r 0.877. Forward order shows no line (contrast p99−p50 79 against 123 in reverse).
+
+![CT, reader-v3, rectina-m4 (top); reader-v3 15 voxels off the sheet and depth-shuffled (bottom); dashed: block boundaries; red: winners' claim box](../results/herculex-306b-stitch/sheet.jpg)
+
 ## Reproduce
 ```bash
 python3 herculex/tests/test_place_check.py                                              # 3 synthetic tests
+python3 herculex/tests/test_stitch_blocks.py                                            # 4 synthetic tests
 VC3D=... INKSDK=... KPY=... VILLA_SRC=... MODELS_DIR=... bash herculex/demo_306b.sh out/hx306b   # CPU, ~30 min
+VC3D=... INKSDK=... KPY=... VILLA_SRC=... MODELS_DIR=... bash herculex/stitch_demo_306b.sh out/st306b   # CPU, 1.5–3 h
 ```
+The stitch demo outputs in `results/herculex-306b-stitch/` (`summary.txt`, `stitch.txt`, `stitch_report.json`,
+`place_check.json`, `window.txt`, `controls_stats.json`, `sheet.json`, `sheet.jpg`) are from a clean checkout of these scripts (paths shown as `<checkout>` and `<out>`).
 The demo outputs in `results/herculex-306b/` (`summary.txt`, `controls_stats.json`, `place_check.json`,
 `sheet.json`, `sheet.jpg`) are from a clean checkout of these scripts.
 
