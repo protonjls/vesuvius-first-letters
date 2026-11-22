@@ -70,8 +70,20 @@ def test_resample(tmp):
     print('resample ok r=%.4f' % rr)
 
 
+def test_read_team(tmp):
+    """read_team on a tiled, deflate-compressed uint8 TIFF like the published team maps."""
+    import tifffile
+    img = np.random.default_rng(1).integers(0, 256, (700, 900), dtype=np.uint8)
+    tifffile.imwrite(f'{tmp}/team.tif', img, tile=(256, 256), compression='zlib')
+    win = (300, 410, 250, 300)
+    got = kc.read_team(f'{tmp}/team.tif', win)
+    assert got.shape == (250, 300) and np.array_equal(got, img[300:550, 410:710].astype(np.float32) / 255.0)
+    print('read_team ok')
+
+
 if __name__ == '__main__':
     with tempfile.TemporaryDirectory() as tmp:
         test_nodecorr(tmp)
         test_resample(tmp)
+        test_read_team(tmp)
     print('all tests passed')

@@ -35,5 +35,6 @@ bash $KIT/render_infer.sh $OUT/B $D/m24 $CT24 2.399 - $C0 $R0 $W $H || { echo "B
 set -- $CW
 bash $KIT/render_infer.sh $OUT/C $D/m9 $CT24 2.399 $D/tf/transform.json:inv $1 $2 $3 $4 || { echo "C failed"; exit 4; }
 run $KPY $KIT/kat_compare.py compare --b $OUT/B --c $OUT/C --team $D/team.tif --win $WIN --corr $OUT/corr.json \
-    --affine $D/tf/transform.json --mesh-a $D/m9 --mesh-b $D/m24 --c-origin $1 $2 --out $OUT/kat | tee -a $OUT/demo.log
+    --affine $D/tf/transform.json --mesh-a $D/m9 --mesh-b $D/m24 --c-origin $1 $2 --out $OUT/kat | tee -a $OUT/demo.log \
+  || { echo "compare failed"; exit 5; }
 echo "done: $OUT/kat/kat.json $OUT/kat/sheet.png"

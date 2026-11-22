@@ -66,11 +66,15 @@ def resample_into_team(img, A2, win, c_origin):
 
 
 def read_team(path, win):
-    import tifffile, zarr
+    """Window R0 C0 H W of a team ink map (uint8 TIFF; full-resolution level of its first series) as float in [0, 1].
+    Decodes the whole level (about 750 MB for the PHerc0139 demo map) so it needs no zarr (tifffile's zarr store
+    requires zarr >= 3)."""
+    import tifffile
     R0, C0, H, W = win
-    z = zarr.open(tifffile.imread(path, aszarr=True), mode='r')
-    z = z[0] if hasattr(z, 'keys') and '0' in z else z
-    return np.asarray(z[R0:R0 + H, C0:C0 + W]).astype(np.float32) / 255.0
+    with tifffile.TiffFile(path) as tf:
+        img = tf.series[0].levels[0].asarray()
+    assert img.ndim == 2 and R0 >= 0 and C0 >= 0 and R0 + H <= img.shape[0] and C0 + W <= img.shape[1], (img.shape, win)
+    return img[R0:R0 + H, C0:C0 + W].astype(np.float32) / 255.0
 
 
 def compare(a):
