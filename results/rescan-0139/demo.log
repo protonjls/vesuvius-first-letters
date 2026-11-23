@@ -1,0 +1,62 @@
+C window (x0 y0 w h): 11258 3770 3400 3401
+render_infer: mesh <out>/data/m24 ct https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0139/volumes/20260102150214-2.399um-0.2m-78keV-masked.zarr um=2.399 affine=- window x0=11500 y0=4000 3000x3000 N=96 depth=62 profile=canonical_2um@r152-3ddec-v2-l5-epoch13
+Voxel size (remote volume metadata): 2.399 micrometer
+ds_level=0 ds_scale=1 sA=1 Pg=1 render_scale=1
+rendering 3000x3000 at scale 1 crop [3000×3000 from (11500,4000)]
+render 28 s
+d0 fwd map (3000, 3000) mean 0.1706 p99 0.7925
+d0 fwd infer 30 s
+d0 rev map (3000, 3000) mean 0.3549 p99 0.9512
+d0 rev infer 29 s
+done
+render_infer: mesh <out>/data/m9 ct https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0139/volumes/20260102150214-2.399um-0.2m-78keV-masked.zarr um=2.399 affine=<out>/data/tf/transform.json:inv window x0=11258 y0=3770 3400x3401 N=96 depth=62 profile=canonical_2um@r152-3ddec-v2-l5-epoch13
+Loaded affine[0]: <out>/data/tf/transform.json (invert)
+Final composed affine:
+Voxel size (remote volume metadata): 2.399 micrometer
+ds_level=0 ds_scale=1 sA=3.88979 Pg=1 render_scale=3.88979
+rendering 3400x3401 at scale 1 crop [3400×3401 from (11258,3770)]
+render 36 s
+d0 fwd map (3401, 3400) mean 0.1870 p99 0.9152
+d0 fwd infer 35 s
+d0 rev map (3401, 3400) mean 0.3366 p99 0.9508
+d0 rev infer 34 s
+done
+{
+ "window_rc_hw": [
+  4000,
+  11500,
+  3000,
+  3000
+ ],
+ "B_r_vs_team_fwd": -0.1512804790835823,
+ "B_r_vs_team_rev": 0.9396436332155849,
+ "B_order": "rev",
+ "B_r": 0.9396436332155849,
+ "sA": 3.8897861285630198,
+ "pxC_to_team_rc": [
+  [
+   1.0000872779175614,
+   1.7620547010520264e-06,
+   28.826924592458496
+  ],
+  [
+   7.759777023260359e-05,
+   1.0003792458765246,
+   37.093040530584716
+  ]
+ ],
+ "C_valid_frac": 0.9999975555555556,
+ "C_r_vs_B_fwd": -0.1350053291248853,
+ "C_r_vs_team_fwd": -0.12524397393454725,
+ "C_r_vs_B_rev": 0.9305907688130255,
+ "C_r_vs_team_rev": 0.9292082239903157,
+ "C_order": "rev",
+ "C_r": 0.9305907688130255,
+ "ct_r_B_vs_C": 0.9794847513998164,
+ "known_answer": {
+  "B_r>=0.8": true,
+  "C_r>=0.6": true
+ }
+}
+done: <out>/kat/kat.json <out>/kat/sheet.png
+demo rc=0 215 s

@@ -1,0 +1,5 @@
+clean checkout: bae8927 rescan: read the team map without zarr (tifffile's zarr store needs zarr >= 3); demo exits non-zero when the comparison fails; read_team test
+working tree: clean (git status --porcelain empty)
+GPU: one NVIDIA H100 MIG 3g.40gb slice (an earlier run on a 2g.20gb slice rendered and inferred the same windows)
+container: Apptainer image with VC3D AppImage f0e4410 and ink-sdk 2df3ab50 (see README Requirements)
+demo wall time: 215 s including downloads (meshes, transform, team map) and CT streaming from the open-data bucket

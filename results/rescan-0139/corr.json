@@ -1,0 +1,33 @@
+{
+ "a": "<out>/data/m9",
+ "b": "<out>/data/m24",
+ "affine": "<out>/data/tf/transform.json:inv",
+ "n_pairs": 25572,
+ "n_good": 25572,
+ "dist3d_median": 7.962360743682332,
+ "dist3d_p90": 11.131567347394112,
+ "fit_nodeB_from_nodeA (rows: [rowA,colA,1] -> [rowB,colB])": [
+  [
+   3.89012562099608,
+   0.00030183873025820186
+  ],
+  [
+   6.854015933921431e-06,
+   3.89126131391284
+  ],
+  [
+   1.4413462511006574,
+   1.8546520541657048
+  ]
+ ],
+ "fit_resid_nodesB_median": 0.42976600025492484,
+ "fit_resid_nodesB_p95": 0.7885867682021477,
+ "shapeA": [
+  364,
+  340
+ ],
+ "shapeB": [
+  1416,
+  1324
+ ]
+}

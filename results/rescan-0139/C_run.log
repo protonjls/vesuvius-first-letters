@@ -1,0 +1,12 @@
+render_infer: mesh <out>/data/m9 ct https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0139/volumes/20260102150214-2.399um-0.2m-78keV-masked.zarr um=2.399 affine=<out>/data/tf/transform.json:inv window x0=11258 y0=3770 3400x3401 N=96 depth=62 profile=canonical_2um@r152-3ddec-v2-l5-epoch13
+Loaded affine[0]: <out>/data/tf/transform.json (invert)
+Final composed affine:
+Voxel size (remote volume metadata): 2.399 micrometer
+ds_level=0 ds_scale=1 sA=3.88979 Pg=1 render_scale=3.88979
+rendering 3400x3401 at scale 1 crop [3400×3401 from (11258,3770)]
+render 36 s
+d0 fwd map (3401, 3400) mean 0.1870 p99 0.9152
+d0 fwd infer 35 s
+d0 rev map (3401, 3400) mean 0.3366 p99 0.9508
+d0 rev infer 34 s
+done

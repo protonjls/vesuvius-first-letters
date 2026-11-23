@@ -1,0 +1,5 @@
+nodecorr ok [[4.0, -0.0], [0.0, 4.0], [1.0, 2.0]]
+resample ok r=1.0000
+read_team ok
+all tests passed
+tests rc=0
