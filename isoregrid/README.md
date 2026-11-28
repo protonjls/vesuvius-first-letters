@@ -2,16 +2,17 @@
 
 villa's `fit_spiral` writes each winding as a tifxyz grid that is regular in (angle, z), not in 3D. Rows follow z and
 stay about one step apart. Columns follow the angle, so their 3D spacing changes with the local radius and with how
-the sheet bends: on the PHerc0211 fit below, column edges run from about 15 to 53 voxels for a nominal 20. A render at
-one pixel per grid unit then stretches the text in some places and squashes it in others, and an ink model sees
+the sheet bends: on the PHerc0211 fit below, column edges run from about 16 to 44 voxels (10th to 90th percentile)
+for a nominal 20, and over 50 in places. A render at one pixel per grid unit then stretches the text in some places and squashes it in others, and an ink model sees
 letters of the wrong shape.
 
 `iso_regrid.py` keeps the surface and replaces the grid. It flattens the valid nodes to 2D by a mass-spring fit to
 their 3D edge lengths and samples x/y/z on a regular 2D grid, by barycentric interpolation inside the input grid's own
 triangles. Every output edge is then about `--step` voxels long in 3D. The tool reports the input and output
-distortion |edge3D/step − 1| (median and p95 over row and column edges). A First Letters submission must include the
-mesh of its region with a low-distortion isometric 2D flattening, and this is the measure of that. The tool gives
-spiral-fit windings such a flattening and reports how close it comes.
+distortion |edge3D/step − 1| (median and p95 over row and column edges). A First Letters submission's mesh must
+include "a low-distortion isometric 2D parametrization (flattening)" (scrollprize.org/prizes, read 2026-11-28). The page
+sets no metric; this edge-length distortion is one simple way to measure and report it. The tool gives spiral-fit windings such a flattening and reports
+how close it comes.
 
 ## Files
 | file | what it does |
@@ -27,7 +28,8 @@ spiral-fit windings such a flattening and reports how close it comes.
 ## Known answer: PHerc0211, the awarded First Letters region
 `demo_0211.sh` downloads the awardees' hand-refined mesh of the region from the open-data bucket
 (`PHerc0211/segments/20261028201525-crop1711-lines123-v9/mesh/20261028201525-on-20250821151803-9.362um.tifxyz`,
-called v9 here; 86 × 300 nodes at 20 voxels). It runs three arms, each with bars fixed before the first clean-checkout
+called v9 here; 86 × 300 nodes at 20 voxels; the demo writes its sha256 to `v9.sha256`, and the run below used x.tif
+`f0e5b5dd…`, y.tif `25870824…`, z.tif `f8dc5b4c…`). It runs three arms, each with bars fixed before the first clean-checkout
 run:
 
 | arm | input | input distortion (median / p95) | output distortion (median / p95) | normal distance, output → reference (median / p90, voxels) | bars |
@@ -43,14 +45,14 @@ All three arms pass. Fold-overs dropped: 1162 of 43914 triangles (NOOP), 1055 of
 `data/w034_fit` is winding 34 of a villa `fit_spiral` fit (commit d63d3e968, surface tracks on, z 8000–9100) of
 PHerc0211 volume 20250821151803. Each node was then moved along its normal, by at most 15 voxels, onto the public m7
 surface prediction. It lies a median 1.9 voxels from v9 over the award crop. It is not re-gridded: its column edges
-follow the fit's (angle, z) grid.
+follow the fit's (angle, z) grid. The FIT arm's output is node for node the same (same valid mask, largest coordinate
+difference 0.0 voxels) as the re-gridded winding used in the ink run below.
 
 ### Ink on the re-gridded fit (project-run evidence, not reproduced by this demo)
 These numbers come from this project's own pipeline (VC3D render, reader-v3 and rectina-m4 in the reverse depth order,
 maps resampled into the v9 frame over the award crop, v9 rows 32–64 × columns 94–183). Each is the Pearson r against the
 same models' map on v9 itself. The bars were fixed before the run. The project used a copy of v9 with 87 × 301 nodes; the
-public mesh that the demo downloads has 86 × 300. The render and resampling scripts are not part of
-this kit.
+public mesh that the demo downloads has 86 × 300. The render and resampling scripts are not part of this kit.
 
 | surface | r vs the v9 map |
 |---|---|
@@ -62,13 +64,14 @@ this kit.
 
 ![V-V | H-V | raw fit | ISO fit | ISO fit 15 voxels off](../results/isoregrid-0211/ink_panel.png)
 
-Top to bottom, all reader-v3 + rectina-m4 maps in the v9 frame of the award crop: the map on v9 (V-V); on the HerculeX
+Top to bottom, each row the mean of the z-scored reader-v3 and rectina-m4 maps (reverse order, d0), in the v9 frame of the
+award crop, at half resolution: the map on v9 (V-V); on the HerculeX
 piece (H-V); on the raw fit; on the re-gridded fit; on the re-gridded fit 15 voxels off the sheet (null). The
 re-gridded fit shows the award forms, including the left half that the raw fit loses. Project-run evidence, not
 produced by `demo_0211.sh`.
 
-A higher map correlation is not the same as legible letters. In a later blind count, four readers each read crops of
-this row. The re-gridded fit's maps gave 0 legible letters on average, and so did the HerculeX piece's maps with the same
+A higher map correlation is not the same as legible letters. In a later blind count, four independent AI readers (fresh Claude subagents
+with a fixed brief) each read crops of this row. The re-gridded fit's maps gave 0 legible letters on average, and so did the HerculeX piece's maps with the same
 models. The awardees' published image of the row gave 3.5. That count could not tell the surfaces apart, so it does not
 show whether re-gridding makes letters legible. Re-gridding fixes the grid's shape, but the fit still lies about 1.8
 voxels off v9's hand-refined surface.
@@ -76,20 +79,21 @@ voxels off v9's hand-refined surface.
 ## Reproduce
 ```bash
 python3 isoregrid/tests/test_iso_regrid.py                     # CPU, seconds
-PY=python3 bash isoregrid/demo_0211.sh out/iso0211             # CPU, about 1-2 min; exits non-zero if a bar fails
+PY=python3 bash isoregrid/demo_0211.sh out/iso0211             # CPU, about 2-5 min; exits non-zero if a bar fails
 python3 isoregrid/iso_regrid.py <your winding.tifxyz> <out.tifxyz> --step 20
 ```
 
 ## Who this helps
 - Anyone rendering or reading ink on spiral-fit windings, or on any tifxyz grid that is not isometric: re-grid first,
-  then render. Letters keep their shape, and the distortion numbers say whether the grid is fit for that.
-- Anyone assembling a First Letters package: the distortion report is the measure the package's isometric 2D
-  flattening must meet, computed on the mesh you will submit.
+  then render. Letter shapes are then not stretched by the grid, and the distortion numbers say how far the grid is from
+  isometric. On the one row tested, this raised map agreement, not a measured letter count (see above).
+- Anyone assembling a First Letters package: the package needs a low-distortion isometric 2D flattening of
+  the mesh, and the distortion report gives a number for it, computed on the mesh you will submit.
 
 ## Requirements
 - Python 3 with numpy, scipy and tifffile (tested: Python 3.11.5, numpy 1.25.2, scipy 1.11.2, tifffile 2025.5.10).
   `curl` for the demo download (about 0.3 MB). No GPU and no VC3D.
-- Run time: about 15–20 s for an 86 × 300-node mesh on one CPU core (the triangle rasterisation is a Python loop).
+- Run time of `iso_regrid.py`: about 15–20 s for an 86 × 300-node mesh on one CPU core (the triangle rasterisation is a Python loop).
 
 ## Limits
 - Tested only on the meshes above: the v9 mesh, its synthetic squash and one spiral-fit winding of PHerc0211, plus
@@ -100,8 +104,8 @@ python3 isoregrid/iso_regrid.py <your winding.tifxyz> <out.tifxyz> --step 20
   is not developable at that scale.
 - Re-gridding is linear inside each input triangle, so it cannot add detail. The output is no closer to the papyrus than
   the input (FIT: about 1.9 voxels from v9 before re-gridding and 1.8 after, in the project's measurements).
-- The output distortion is not zero. Curved, non-developable patches cannot be flattened without some stretch, and the
-  p95 grows with how far the input is from developable (0.033–0.051 here).
+- The output distortion is not zero: a curved surface that is not developable cannot be flattened without some stretch.
+  The output p95 was 0.033–0.051 on the meshes above.
 - `normal_dn.py` uses the tangent plane at the nearest node. For points between nodes on a curved sheet it is off by a
   few tenths of a voxel: 0.5 at half a 20-voxel node on a radius of 140–300 voxels in the tests. This floor is part
   of the dn numbers above. FIT's 0.42 is mostly this floor, since every output node lies on the input's triangles.

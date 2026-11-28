@@ -1,0 +1,30 @@
+{
+ "arm": "SQUASH",
+ "input": "squash_in",
+ "reference": "v9",
+ "in_distortion_median": 0.026877355596787722,
+ "in_distortion_p95": 0.593942176024542,
+ "out_distortion_median": 0.005500633723864112,
+ "out_distortion_p95": 0.03338852826204314,
+ "out_edges": 41346,
+ "flipped_triangles": 1055,
+ "triangles": 43266,
+ "out_shape": [
+  86,
+  297
+ ],
+ "out_valid": 0.8181426669798763,
+ "dn_out_to_ref_nodes": 20897,
+ "dn_out_to_ref_dn_median": 0.23557354893942895,
+ "dn_out_to_ref_dn_p10": 0.04020976778637088,
+ "dn_out_to_ref_dn_p90": 0.7855117974235533,
+ "dn_out_to_ref_dn_frac_le1": 0.9412355840551275,
+ "dn_out_to_ref_node_dist_median": 7.906278723261227,
+ "bars": {
+  "out_distortion_median < 0.02": true,
+  "out_distortion_p95 < 0.06": true,
+  "dn_median <= 0.5": true,
+  "in_distortion_p95 >= 0.5": true
+ },
+ "pass": true
+}

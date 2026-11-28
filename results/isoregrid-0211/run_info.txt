@@ -1,0 +1,7 @@
+clean-checkout run of commit 2d6fb28 (scripts; README wording edited after the run)
+host: CPU job, 8 cores, 16 GB
+python 3.11.5 numpy 1.25.2 scipy 1.11.2 tifffile 2025.5.10
+cpus 8
+commands: python3 isoregrid/tests/test_iso_regrid.py ; PY=python3 bash isoregrid/demo_0211.sh <out>  (git status of the checkout: clean)
+tests rc=0 2 s
+demo rc=0 257 s

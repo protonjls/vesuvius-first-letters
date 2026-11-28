@@ -1,0 +1,6 @@
+irregular columns ok: input 0.000/0.590 -> output 0.0000/0.0030; distance to true sheet median 0.192
+no-op ok: input 0.0002/0.0006 -> output 0.0000/0.0001; dn to input median 0.008
+squash ok: distortion 0.000/0.588, distance to true sheet median 0.147
+normal_dn ok: known offset 3.00 -> 3.000 at nodes, 2.486 half a node away (nearest-node distance 10.4)
+all isoregrid tests passed
+tests rc=0 2 s

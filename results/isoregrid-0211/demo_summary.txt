@@ -1,0 +1,4 @@
+NOOP: input distortion 0.005/0.026 -> output 0.006/0.038 (median/p95); dn output->v9 median 0.18 p90 0.62; flipped 1162/43914; out [84, 298] -> PASS
+SQUASH: input distortion 0.027/0.594 -> output 0.006/0.033 (median/p95); dn output->v9 median 0.24 p90 0.79; flipped 1055/43266; out [86, 297] -> PASS
+FIT: input distortion 0.109/1.256 -> output 0.006/0.051 (median/p95); dn output->w034_fit median 0.42 p90 1.59; flipped 221/18436; out [67, 234] -> PASS
+ISOREGRID DEMO PASS (3/3 arms)

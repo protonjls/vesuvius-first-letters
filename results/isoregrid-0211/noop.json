@@ -1,0 +1,29 @@
+{
+ "arm": "NOOP",
+ "input": "v9",
+ "reference": "v9",
+ "in_distortion_median": 0.00543495075471534,
+ "in_distortion_p95": 0.025897688172718463,
+ "out_distortion_median": 0.006373637464172077,
+ "out_distortion_p95": 0.03801414453221075,
+ "out_edges": 41525,
+ "flipped_triangles": 1162,
+ "triangles": 43914,
+ "out_shape": [
+  84,
+  298
+ ],
+ "out_valid": 0.8382869926494088,
+ "dn_out_to_ref_nodes": 20984,
+ "dn_out_to_ref_dn_median": 0.18489131437624617,
+ "dn_out_to_ref_dn_p10": 0.030268219247263348,
+ "dn_out_to_ref_dn_p90": 0.6162112610380458,
+ "dn_out_to_ref_dn_frac_le1": 0.965545177277926,
+ "dn_out_to_ref_node_dist_median": 8.494253001749557,
+ "bars": {
+  "out_distortion_median < 0.02": true,
+  "out_distortion_p95 < 0.06": true,
+  "dn_median <= 0.5": true
+ },
+ "pass": true
+}
