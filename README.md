@@ -5,7 +5,7 @@ Open tools and measured results for ink detection on Herculaneum scroll CT
 with human ink labels, and the PHerc0343 First Letters region with its published letter boxes. The scripts that
 produced each number are in this repository.
 
-## Contents (v0.7, 2026-11)
+## Contents (v0.8, 2026-11)
 | directory | what it is | headline result |
 |---|---|---|
 | [`scroll_adapt/`](scroll_adapt/) | Kit for fine-tuning reader-v3 on one scroll from consensus machine pseudo-labels, with no human labels (villa `koine_machines`). Includes the label-zarr layout, weights-only init, an exact no-op control and a fixed pass bar. | **Negative on PHerc1447.** Two runs gave held-out AUC changes of +0.005/−0.020 and +0.003/−0.020 (w058/w060) against base reader-v3. Self-training on agreed pixels did not help. |
@@ -16,6 +16,7 @@ produced each number are in this repository.
 | [`herculex/`](herculex/) | CPU kit for checking forms in a [HerculeX](https://github.com/adambetka2/HerculeX) unwrap on the piece itself. It renders a HerculeX piece with VC3D and runs a second model (rectina-m4) next to reader-v3, in both depth orders. It adds false-positive controls (d±1/±2, 15 voxels off the sheet, depth shuffle) and a review sheet that lines up HerculeX's own CT and ink images with the render. A normal-distance place check tests whether two meshes are on the same sheet. `stitch_blocks.py` joins the blocks of one HerculeX source surface into one mesh, so a text line split across pieces can be read whole. | **Known answer: PHerc0306B.** A HerculeX piece lies a median 2.75 voxels from the winners' claim surface; nearest-node distance reads 7.5. Our render and reader-v3 reproduce HerculeX's ink on it (r 0.84, reverse order only). Rectina-m4 agrees (r 0.90). The awarded line persists at d±2 (r ≥ 0.91) and is gone off the sheet (r ≤ 0.22) and under shuffling (r ≤ 0.04). The 9 blocks of that piece's source stitch with 0.0-voxel overlap disagreement. They reach 98.5% of the claim box (one piece: 52%), and the line runs across a block boundary in both models. |
 | [`crosscheck/`](crosscheck/) | Mesh-to-mesh check that ink forms are a property of the papyrus, not of one mesh. Each pixel of mesh A is matched to the same surface point on mesh B (nearest node refined on B's tangent plane, normal-distance gate). B's ink map is resampled into A's frame and the Pearson r is reported for every model and depth-order pair, with a shifted negative control. No hand alignment and no annotation. Includes synthetic tests. | **Known answer: PHerc0306B.** A HerculeX piece and an independent GrowPatch mesh of the awarded line lie a median 3.0 voxels apart. Reader-v3 maps correlate at r 0.685 (rectina-m4 0.736) in one order pair. With B shifted by half a letter, r falls to 0.12/0.11. |
 | [`rescan/`](rescan/) | Runs the Vesuvius Challenge team's canonical 2.4 µm ink model (`canonical_2um`, via ink-sdk) on a 2.4 µm rescan along any tifxyz mesh. The mesh can come from the scroll's 9.36 µm volume: it is mapped into the rescan by the team's official transform. Both depth orders are run. Includes a node correspondence between two meshes of one sheet, a comparison against a published map, and synthetic tests. | **Known answer: PHerc0139.** On the segment's own 2.4 µm mesh our map matches the team's published canonical map at r 0.940. The segment's 9.36 µm mesh, mapped through the official transform, gives the same map (r 0.931 against it, 0.929 against the team map). Only the reverse depth order matches. |
+| [`isoregrid/`](isoregrid/) | CPU tool that re-grids a tifxyz surface isometrically: a mass-spring flatten of the nodes, then barycentric re-sampling on a regular grid. Spiral-fit windings (villa `fit_spiral`) are regular in (angle, z), so their column edges vary 15–53 voxels in 3D and renders squash the text. The tool reports the input and output distortion \|edge3D/step − 1\|, the measure a First Letters package's isometric flattening must meet. Includes a synthetic column squash, a normal-distance check and synthetic tests. | **Known answer: PHerc0211.** The awardees' v9 mesh stays isometric (distortion median/p95 0.006/0.038) and on its surface (normal distance median 0.18 voxels). A synthetic squash goes from p95 0.594 back to 0.033. A raw spiral-fit winding of the awarded region goes from 0.109/1.256 to 0.006/0.051. In the project's own ink pipeline (not reproduced by the demo), the re-gridded winding's reader-v3 + rectina-m4 map matches the map on v9 at r 0.912, against 0.741 for the raw winding. |
 | [`docs/`](docs/) | `koine_finetune_notes.md`: how koine_machines fine-tuning works, with code citations (dataset layout, label zarrs, checkpoint loading, loss masking, inference parity). `environment.md`: how to build the environment. | |
 | [`results/`](results/) | Raw outputs of every run reported above: scores, configs and run info. | |
 
@@ -40,6 +41,8 @@ produced each number are in this repository.
 - Anyone with a 9.36 µm segment of a scroll that also has a 2.4 µm rescan: `rescan/` shows what the team's canonical
   2.4 µm model sees along that exact surface, without retracing the sheet in the rescan. It also gives 2.4 µm-model maps
   in the 9 µm surface's own frame, for anyone distilling them into 9 µm models.
+- Anyone rendering ink on spiral-fit windings or other non-isometric tifxyz grids: `isoregrid/` re-grids the surface so
+  letters keep their shape, and reports the distortion measure a First Letters package's flattening must meet.
 - Anyone considering self-training from public-model consensus: here is a measured negative result, with the
   pseudo-label quality that produced it.
 
@@ -60,6 +63,8 @@ python3 crosscheck/tests/test_reappear.py                                       
 VC3D=... INKSDK=... KPY=... VILLA_SRC=... MODELS_DIR=... bash crosscheck/demo_306b.sh out/cc306b     # CPU, about 10 min
 python3 rescan/tests/test_rescan.py                                                       # CPU, seconds
 VC3D=... INKSDK=... KPY=... VILLA_SRC=... MODELS_DIR=... bash rescan/demo_0139.sh out/rescan0139    # GPU, a few minutes
+python3 isoregrid/tests/test_iso_regrid.py                                                # CPU, seconds
+PY=python3 bash isoregrid/demo_0211.sh out/iso0211                                        # CPU, about 1-2 min
 ```
 Each run takes about 30 min on one MIG 2g.20gb H100 slice.
 
@@ -73,7 +78,8 @@ Code: MIT (this repository). It builds on [ScrollPrize/villa](https://github.com
 [HerculeX](https://github.com/adambetka2/HerculeX) (MIT, Adam Betka) and the PHerc0306B claim mesh of
 [SirProdigle/pherc0306b-first-letters](https://github.com/SirProdigle/pherc0306b-first-letters); the `crosscheck/` demo reuses that piece. The `rescan/` kit runs the Vesuvius Challenge team's
 canonical 2.4 µm model as packaged by ink-sdk; its demo compares with the team's published PHerc0139 canonical map and
-uses their official transform. Scroll data: Vesuvius Challenge open data.
+uses their official transform. The `isoregrid/` demo uses the PHerc0211 First Letters awardees' hand-refined mesh
+(open-data segment `20261028201525-crop1711-lines123-v9`) and ships one villa `fit_spiral` winding of that region. Scroll data: Vesuvius Challenge open data.
 
 This repository was built by an AI agent (Claude, Anthropic) working for the repository owner. Treat every result as
 a proposal to verify: the scripts and raw outputs are here so you can.

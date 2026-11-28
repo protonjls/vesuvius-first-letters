@@ -1,0 +1,39 @@
+{
+ "scale": [
+  0.05,
+  0.05
+ ],
+ "bbox": [
+  [
+   2352.52001953125,
+   3222.385986328125,
+   8000.03466796875
+  ],
+  [
+   4324.0048828125,
+   4314.2666015625,
+   9099.7998046875
+  ]
+ ],
+ "area_vx2": 3687200,
+ "area_cm2": 3.2317218063680007,
+ "format": "tifxyz",
+ "type": "seg",
+ "uuid": "PHerc0211_fit_spiral_w034_z8000-9100",
+ "source": "PHerc0211, volume 20250821151803 (9.362 um): winding 34 of a villa fit_spiral fit (commit d63d3e968, tracks on, z 8000-9100) of the awarded PHerc0211 First Letters region, each node then moved along its normal (<= 15 voxels) onto the public surface prediction 20250821151803-surface-20260413222639-surface-m7-L0-th0.2. Not re-gridded: column edges follow the fit (angle, z) grid.",
+ "grid_orientation": {
+  "z_direction_is_top_to_bottom": true
+ },
+ "snap": {
+  "max_off": 15,
+  "jump": 6.0,
+  "sigma": 1.0,
+  "thr": 127.5,
+  "normal_sign": 1.0,
+  "frac_raw_found": 0.9709179357021996,
+  "frac_snapped": 0.9538917089678511,
+  "median_abs_off": 0.6968861818313599,
+  "p95_abs_off": 3.0563466548919678
+ },
+ "volume": "https://vesuvius-challenge-open-data.s3.us-east-1.amazonaws.com/PHerc0211/volumes/20250821151803-9.362um-1.2m-113keV-masked.zarr"
+}
